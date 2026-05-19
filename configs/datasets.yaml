@@ -1,1 +1,12 @@
-
+datasets:
+  - Salesforce/wikitext
+  - roneneldan/TinyStories
+  - Skylion007/openwebtext
+  - bookcorpusopen/bookcorpusopen
+  - teiid/wikicorpus
+  - ag_news
+  - cnn_dailymail
+  - xsum
+  - yelp_review_full
+  - amazon_reviews_multi
+  - daily_dialog
