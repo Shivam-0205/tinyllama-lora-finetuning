@@ -1,1 +1,216 @@
+\documentclass[12pt]{article}
 
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{float}
+
+\title{TinyLlama LoRA Fine-Tuning using PEFT}
+\author{Shivam Naik}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% ================= ABSTRACT =================
+
+\begin{abstract}
+This project demonstrates parameter-efficient fine-tuning of the TinyLlama 1.1B autoregressive language model using LoRA adapters and PEFT techniques under constrained GPU environments. The model was trained on multiple lightweight text datasets using Google Colab T4 GPUs and tracked using Weights \& Biases (W\&B). The project focuses on reproducibility, modularity, and efficient training workflows.
+\end{abstract}
+
+% ================= INTRODUCTION =================
+
+\section{Introduction}
+
+Large Language Models (LLMs) require significant computational resources for full fine-tuning. Parameter-Efficient Fine-Tuning (PEFT) methods such as LoRA (Low-Rank Adaptation) reduce memory and compute requirements by training only a small subset of additional parameters.
+
+This project explores LoRA fine-tuning on TinyLlama 1.1B using lightweight datasets compatible with limited GPU environments like Google Colab T4 GPUs.
+
+% ================= MODEL =================
+
+\section{Model}
+
+The selected model was:
+
+\begin{itemize}
+    \item TinyLlama/TinyLlama-1.1B-Chat-v1.0
+    \item 1.1 Billion Parameters
+    \item Transformer-based autoregressive architecture
+    \item Hugging Face compatible
+    \item PEFT + LoRA compatible
+\end{itemize}
+
+The model was loaded using 4-bit quantization through BitsAndBytes for reduced GPU memory usage.
+
+% ================= DATASETS =================
+
+\section{Datasets}
+
+The following datasets were used:
+
+\begin{itemize}
+    \item TinyStories
+    \item WikiText-2
+    \item AG News
+    \item DailyDialog
+    \item SQuAD
+\end{itemize}
+
+Datasets were converted into text-only format and tokenized using the TinyLlama tokenizer with maximum sequence length 128.
+
+% ================= LORA CONFIG =================
+
+\section{LoRA Configuration}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+Parameter & Value \\
+\midrule
+Rank (r) & 8 \\
+Alpha & 16 \\
+Dropout & 0.05 \\
+Target Modules & q\_proj, v\_proj \\
+\bottomrule
+\end{tabular}
+\caption{LoRA Hyperparameters}
+\end{table}
+
+% ================= TRAINING =================
+
+\section{Training Setup}
+
+Training was performed on Google Colab using NVIDIA Tesla T4 GPUs.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+Parameter & Value \\
+\midrule
+Batch Size & 1 \\
+Gradient Accumulation Steps & 4 \\
+Learning Rate & 2e-4 \\
+Epochs & 1 \\
+Max Sequence Length & 128 \\
+Optimizer & paged\_adamw\_8bit \\
+Precision & FP16 \\
+\bottomrule
+\end{tabular}
+\caption{Training Configuration}
+\end{table}
+
+% ================= WANDB =================
+
+\section{Experiment Tracking}
+
+All experiments were tracked using Weights \& Biases (W\&B).
+
+Tracked Metrics:
+\begin{itemize}
+    \item Training Loss
+    \item Learning Rate
+    \item Gradient Norm
+    \item Runtime Metrics
+    \item Global Step
+\end{itemize}
+
+% ================= RESULTS =================
+
+\section{Results}
+
+\subsection{Training Loss}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{loss.png}
+\caption{Training Loss Curve}
+\end{figure}
+
+\subsection{Learning Rate Schedule}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{learning_rate.png}
+\caption{Learning Rate Schedule}
+\end{figure}
+
+\subsection{Gradient Norm}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{grad_norm.png}
+\caption{Gradient Norm during Training}
+\end{figure}
+
+% ================= INFERENCE =================
+
+\section{Inference Performance}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+Metric & Value \\
+\midrule
+Inference Time & 6.09 sec \\
+Tokens Generated & 54 \\
+Tokens/sec & 8.86 \\
+Final Training Loss & 2.02 \\
+\bottomrule
+\end{tabular}
+\caption{Inference Metrics}
+\end{table}
+
+Generated text quality improved slightly after LoRA fine-tuning, though limited training epochs and constrained datasets reduced final coherence.
+
+% ================= CHALLENGES =================
+
+\section{Challenges Faced}
+
+\begin{itemize}
+    \item Google Colab GPU usage limits
+    \item Limited VRAM on T4 GPU
+    \item Runtime disconnects
+    \item Dataset compatibility issues
+    \item Managing memory during quantized training
+\end{itemize}
+
+% ================= CONCLUSION =================
+
+\section{Conclusion}
+
+This project successfully demonstrated efficient LoRA fine-tuning of TinyLlama 1.1B using PEFT methods under constrained GPU environments.
+
+The workflow achieved:
+\begin{itemize}
+    \item Successful LoRA adaptation
+    \item Efficient 4-bit quantized training
+    \item Experiment tracking with W\&B
+    \item Modular and reproducible repository setup
+\end{itemize}
+
+Future work may include:
+\begin{itemize}
+    \item Larger datasets
+    \item Multi-epoch fine-tuning
+    \item Better evaluation metrics
+    \item Improved inference quality
+\end{itemize}
+
+% ================= REFERENCES =================
+
+\section{References}
+
+\begin{itemize}
+    \item Hugging Face Transformers Documentation
+    \item PEFT Documentation
+    \item TinyLlama Model Card
+    \item Weights \& Biases Documentation
+    \item BitsAndBytes Quantization Documentation
+\end{itemize}
+
+\end{document}
