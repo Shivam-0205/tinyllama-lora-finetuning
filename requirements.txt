@@ -1,8 +1,10 @@
 transformers
 datasets
 accelerate
+bitsandbytes
 peft
 trl
 wandb
-bitsandbytes
 torch
+sentencepiece
+scipy
