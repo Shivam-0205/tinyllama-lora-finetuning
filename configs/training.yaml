@@ -1,1 +1,29 @@
+training:
+  model_name: TinyLlama/TinyLlama-1.1B-Chat-v1.0
 
+  batch_size: 1
+  gradient_accumulation_steps: 4
+
+  learning_rate: 2e-4
+
+  epochs: 1
+
+  optimizer: paged_adamw_8bit
+
+  fp16: true
+
+  max_length: 128
+
+  logging_steps: 10
+
+  save_steps: 100
+
+  save_total_limit: 1
+
+  lr_scheduler: cosine
+
+hardware:
+  gpu: NVIDIA Tesla T4
+
+quantization:
+  load_in_4bit: true
