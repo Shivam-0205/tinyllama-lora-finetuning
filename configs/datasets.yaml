@@ -1,12 +1,13 @@
 datasets:
-  - Salesforce/wikitext
   - roneneldan/TinyStories
-  - Skylion007/openwebtext
-  - bookcorpusopen/bookcorpusopen
-  - teiid/wikicorpus
+  - wikitext/wikitext-2-raw-v1
   - ag_news
-  - cnn_dailymail
-  - xsum
-  - yelp_review_full
-  - amazon_reviews_multi
   - daily_dialog
+  - squad
+
+max_samples_per_dataset: 1000
+
+tokenization:
+  max_length: 128
+  truncation: true
+  padding: max_length
